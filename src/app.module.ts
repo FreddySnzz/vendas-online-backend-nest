@@ -9,6 +9,7 @@ import { typeOrmService } from './config/typeorm.config';
 import { StateModule } from './state/state.module';
 import { CityModule } from './city/city.module';
 import { AddressModule } from './address/address.module';
+import { CacheModule } from './cache/cache.module';
 
 
 @Module({
@@ -20,7 +21,8 @@ import { AddressModule } from './address/address.module';
     UserModule,
     StateModule,
     CityModule,
-    AddressModule
+    AddressModule,
+    CacheModule
   ],
   controllers: [AppController],
   providers: [AppService],
