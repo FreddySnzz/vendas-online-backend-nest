@@ -6,6 +6,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { typeOrmService } from './config/typeorm.config';
+import { StateModule } from './state/state.module';
+import { CityModule } from './city/city.module';
+import { AddressModule } from './address/address.module';
+
 
 @Module({
   imports: [
@@ -13,9 +17,13 @@ import { typeOrmService } from './config/typeorm.config';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(typeOrmService.getTypeormConfig()),
-    UserModule
+    UserModule,
+    StateModule,
+    CityModule,
+    AddressModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}
