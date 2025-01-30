@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { CityEntity } from './entities/city.entity';
 import { CacheService } from 'src/cache/cache.service';
 
-
 @Injectable()
 export class CityService {
   constructor(
