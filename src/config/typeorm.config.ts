@@ -12,7 +12,7 @@ class TypeOrmService {
       entities: [`${__dirname}/../**/*.entity.{js,.ts}`],
       migrations: [`${__dirname}/../migration/{.ts,*.js}`],
       // synchronize: true
-      // migrationsRun: true
+      migrationsRun: true
     };
   }
 }
