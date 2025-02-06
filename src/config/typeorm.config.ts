@@ -11,8 +11,8 @@ class TypeOrmService {
       database: process.env.TYPEORM_DATABASE,
       entities: [`${__dirname}/../**/*.entity.{js,.ts}`],
       migrations: [`${__dirname}/../migration/{.ts,*.js}`],
-      // synchronize: true
-      migrationsRun: true
+      synchronize: false,
+      migrationsRun: false
     };
   }
 }

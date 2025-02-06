@@ -1,4 +1,4 @@
-import { ReturnUserDto } from "../../user/dtos/returnUser.dto";
+import { ReturnUserDto } from "../../user/dtos/return-user.dto";
 
 export class ReturnLoginDto {
   user: ReturnUserDto;
