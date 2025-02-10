@@ -42,21 +42,25 @@ describe('CityService', () => {
     expect(cityRepository).toBeDefined();
   });
 
-  it('should return findCityById', async () => {
-    const city = await service.findCityById(cityMock.id);
-
-    expect(city).toEqual(cityMock);
+  describe('Find city by id', () => {
+    it('should return findCityById', async () => {
+      const city = await service.findCityById(cityMock.id);
+  
+      expect(city).toEqual(cityMock);
+    });
+  
+    it('should return error findCityById not found', async () => {
+      jest.spyOn(cityRepository, 'findOne').mockResolvedValueOnce(undefined);
+  
+      expect(service.findCityById(cityMock.id)).rejects.toThrow();
+    });
   });
 
-  it('should return error findCityById not found', async () => {
-    jest.spyOn(cityRepository, 'findOne').mockResolvedValueOnce(undefined);
-
-    expect(service.findCityById(cityMock.id)).rejects.toThrow();
-  });
-
-  it('should return getAllCitiesByStateId', async () => {
-    const cities = await service.getAllCitiesByStateId(cityMock.stateId);
-
-    expect(cities).toEqual([cityMock]);
+  describe('Find all cities by state id', () => {
+    it('should return getAllCitiesByStateId', async () => {
+      const cities = await service.getAllCitiesByStateId(cityMock.stateId);
+  
+      expect(cities).toEqual([cityMock]);
+    });
   });
 });

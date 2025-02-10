@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 
 import { CategoryService } from './category.service';
 import { ReturnCategoryDto } from './dtos/return-category.dto';
@@ -28,10 +28,19 @@ export class CategoryController {
     return await this.categoryService.createCategory(createCategory);
   };
 
-  @Get('/:categoryName')
+  @Get('search')
   async findCategoryByName(
-    @Param('categoryName') categoryName: string
+    @Query('category_name') categoryName: string
+  ): Promise<ReturnCategoryDto[]> {
+    return (await this.categoryService.findCategoryByName(categoryName)).map(
+      categories => new ReturnCategoryDto(categories)
+    );
+  };
+
+  @Get('/:id')
+  async findCategoryById(
+    @Param('id') id: number
   ): Promise<ReturnCategoryDto> {
-    return await this.categoryService.findCategoryByName(categoryName);
+    return await this.categoryService.findCategoryById(id);
   };
 }

@@ -33,15 +33,29 @@ export class CategoryService {
     return await this.categoryRepository.save(createCategoryDto);
   };
 
-  async findCategoryByName(name: string): Promise<CategoryEntity> {
-    const category = await this.categoryRepository.findOne({
+  async findCategoryByName(name: string): Promise<CategoryEntity[]> {
+    const category = await this.categoryRepository.find({
       where: {
         name
       }
     });
 
-    if (!category) {
+    if (!category || category.length === 0) {
       throw new NotFoundException(`Category ${name} not found`);
+    };
+
+    return category;
+  };
+
+  async findCategoryById(id: number): Promise<CategoryEntity> {
+    const category = await this.categoryRepository.findOne({
+      where: {
+        id
+      }
+    });
+
+    if (!category) {
+      throw new NotFoundException(`Category ID: ${id} not found`);
     };
 
     return category;

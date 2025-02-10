@@ -56,33 +56,37 @@ describe('AddressService', () => {
     expect(addressRepository).toBeDefined();
   });
 
-  it('should return address after createAddress', async () => {
-    const address = await service.createAddress(createAddressMock, userEntityMock.id);
-
-    expect(address).toEqual(addressMock);
+  describe('Create address', () => {
+    it('should return address after createAddress', async () => {
+      const address = await service.createAddress(createAddressMock, userEntityMock.id);
+  
+      expect(address).toEqual(addressMock);
+    });
+  
+    it('should return error if exception in userService', async () => {
+      jest.spyOn(userService, 'findUserById').mockRejectedValue(new Error());
+  
+      expect(service.createAddress(createAddressMock, userEntityMock.id)).rejects.toThrow();
+    });
+  
+    it('should return error if exception in cityService', async () => {
+      jest.spyOn(cityService, 'findCityById').mockRejectedValue(new Error());
+  
+      expect(service.createAddress(createAddressMock, userEntityMock.id)).rejects.toThrow();
+    });
   });
 
-  it('should return error if exception in userService', async () => {
-    jest.spyOn(userService, 'findUserById').mockRejectedValue(new Error());
-
-    expect(service.createAddress(createAddressMock, userEntityMock.id)).rejects.toThrow();
-  });
-
-  it('should return error if exception in cityService', async () => {
-    jest.spyOn(cityService, 'findCityById').mockRejectedValue(new Error());
-
-    expect(service.createAddress(createAddressMock, userEntityMock.id)).rejects.toThrow();
-  });
-
-  it('should return all address by user id', async () => {
-    const addresses = await service.findAllAddressesByUserId(userEntityMock.id);
-
-    expect(addresses).toEqual([addressMock])
-  });
-
-  it('should return not found if no address found', async () => {
-    jest.spyOn(addressRepository, 'find').mockResolvedValue(undefined);
-
-    expect(service.findAllAddressesByUserId(userEntityMock.id)).rejects.toThrow();
+  describe('Find all addresses by user id', () => {
+    it('should return all address by user id', async () => {
+      const addresses = await service.findAllAddressesByUserId(userEntityMock.id);
+  
+      expect(addresses).toEqual([addressMock])
+    });
+  
+    it('should return not found if no address found', async () => {
+      jest.spyOn(addressRepository, 'find').mockResolvedValue(undefined);
+  
+      expect(service.findAllAddressesByUserId(userEntityMock.id)).rejects.toThrow();
+    });
   });
 });
