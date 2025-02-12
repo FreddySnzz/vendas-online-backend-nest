@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 
 import { ProductService } from './product.service';
 import { Roles } from '../decorators/roles.decorator';
@@ -6,6 +6,7 @@ import { UserType } from '../user/enum/user-type.enum';
 import { ReturnProductDto } from './dtos/return-product.dto';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { ProductEntity } from './entities/product.entity';
+import { DeleteResult } from 'typeorm';
 
 @Roles(UserType.User, UserType.Admin)
 @Controller('product')
@@ -18,8 +19,17 @@ export class ProductController {
       product => new ReturnProductDto(product)
     );
   };
+  
+  @Get('search-by-category')
+  async findAllByCategoryId(
+    @Query('category_id') categoryId: number
+  ): Promise<ReturnProductDto[]> {
+    return (await this.productService.findAllByCategoryId(categoryId)).map(
+      product => new ReturnProductDto(product)
+    );
+  };
 
-  @Get('search')
+  @Get('search-by-name')
   async findProductByName(
     @Query('product_name') productName: string
   ): Promise<ReturnProductDto[]> {
@@ -42,5 +52,13 @@ export class ProductController {
     @Body() createProduct: CreateProductDto
   ): Promise<ProductEntity> {
     return await this.productService.createProduct(createProduct);
+  };
+
+  @Roles(UserType.Admin)
+  @Delete('/:productId')
+  async deleteProductById(
+    @Param('productId') productId: number
+  ): Promise<DeleteResult> {
+    return await this.productService.deleteProductById(productId);
   };
 }
