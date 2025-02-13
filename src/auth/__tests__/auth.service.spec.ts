@@ -6,7 +6,6 @@ import { UserService } from "../../user/user.service";
 import { userEntityMock } from "../../user/__mocks__/user.mock";
 import { jwtMock } from "../__mocks__/jwt.mock";
 import { loginUserMock } from "../__mocks__/login-user.mock";
-import { ReturnUserDto } from "../../user/dtos/return-user.dto";
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -45,7 +44,8 @@ describe('AuthService', () => {
 
     expect(user).toEqual({
       accessToken: jwtMock,
-      user: new ReturnUserDto(userEntityMock)
+      email: userEntityMock.email,
+      role: userEntityMock.typeUser === 1 ? "User" : "Admin"
     });
   });
 

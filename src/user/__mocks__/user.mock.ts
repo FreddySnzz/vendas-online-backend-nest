@@ -8,7 +8,7 @@ export const userEntityMock: UserEntity = {
   cpf: '12345678910',
   typeUser: UserType.User,
   phone: '12345678910',
-  password: '$2a$10$IBxw.ew1cOLY8y4CNyUCV.er23kREVTXNDy/FILbY0TFuGoMFsdOa',
+  password: '$2a$10$lLZvPziRS7HBw3aQtuD1IOu9yc0AxTEj.L.W1nC0wA5iiVvsQ/vMS',
   createdAt: new Date(),
   updatedAt: new Date(),
   addresses: [],

@@ -1,11 +1,12 @@
-import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
-import { hash } from 'bcrypt';
-import { Repository } from 'typeorm';
+import { BadRequestException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import { Repository, UpdateResult } from 'typeorm';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserType } from './enum/user-type.enum';
+import { UpdatePasswordDto } from './dtos/update-password.dto';
+import { createPasswordHashed, validatePassword } from '../utils/password';
 
 @Injectable()
 export class UserService {
@@ -23,8 +24,7 @@ export class UserService {
       throw new NotAcceptableException(`Email already exists`);
     };
 
-    const saltOrRounds = 10;
-    const passwordHashed = await hash(createUserDto.password, saltOrRounds);
+    const passwordHashed = await createPasswordHashed(createUserDto.password);
 
     return this.userRepository.save({
       ...createUserDto,
@@ -78,5 +78,28 @@ export class UserService {
     };
 
     return user;
+  };
+
+  async updatePassword(userId: number, updatePasswordDto: UpdatePasswordDto): Promise<UserEntity> {
+    const user = await this.findUserById(userId);
+
+    if (updatePasswordDto.newPassword === updatePasswordDto.oldPassword) {
+      throw new BadRequestException(`Passwords cannot be the same`);
+    };
+
+    const isMatch = await validatePassword(updatePasswordDto.oldPassword, user.password);
+
+    if (!isMatch) {
+      throw new BadRequestException(`Passwords do not match`);
+    };
+
+    const passwordHashed = await createPasswordHashed(updatePasswordDto.newPassword);
+
+    await this.userRepository.save({
+      ...user,
+      password: passwordHashed
+    });
+
+    return undefined;
   };
 }
