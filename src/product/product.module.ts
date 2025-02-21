@@ -12,7 +12,8 @@ import { CategoryModule } from '../category/category.module';
     CategoryModule
   ],
   controllers: [ProductController],
-  providers: [ProductService]
+  providers: [ProductService],
+  exports: [ProductService]
 })
 
 export class ProductModule {}
