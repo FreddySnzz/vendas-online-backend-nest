@@ -1,8 +1,8 @@
 import { Controller, Get, Param } from '@nestjs/common';
 
 import { CityService } from './city.service';
-import { Roles } from 'src/decorators/roles.decorator';
-import { UserType } from 'src/user/enum/user-type.enum';
+import { Roles } from '../decorators/roles.decorator';
+import { UserType } from '../user/enum/user-type.enum';
 
 @Roles(UserType.Admin, UserType.User)
 @Controller('city')

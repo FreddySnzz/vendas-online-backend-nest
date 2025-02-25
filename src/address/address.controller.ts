@@ -26,7 +26,7 @@ export class AddressController {
   };
 
   @Get()
-  async findAllAddressByUserId(
+  async findAllAddressesByUserId(
     @UserId() userId: number,
   ): Promise<ReturnAddressDto[]> {
     return (await this.addressService.findAllAddressesByUserId(userId)).map(

@@ -26,7 +26,7 @@ export class CartController {
   };
 
   @Get()
-  async findCartByUserId(
+  async findActiveCartByUserId(
     @UserId() userId: number
   ): Promise<ReturnCartDto> {
     return new ReturnCartDto(await this.cartService.findActiveCartByUserId(

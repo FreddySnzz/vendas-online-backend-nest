@@ -6,7 +6,7 @@ import { UserType } from '../user/enum/user-type.enum';
 import { ReturnProductDto } from './dtos/return-product.dto';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { ProductEntity } from './entities/product.entity';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { UpdateProductDto } from './dtos/update-product.dto';
 
 @Roles(UserType.User, UserType.Admin)
@@ -68,7 +68,7 @@ export class ProductController {
   async updateProduct(
     @Param('productId') productId: number,
     @Body() updateProductDto: UpdateProductDto
-  ): Promise<DeleteResult> {
+  ): Promise<UpdateResult> {
     return await this.productService.updateProduct(productId, updateProductDto);
   };
 }

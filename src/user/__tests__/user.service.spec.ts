@@ -110,7 +110,7 @@ describe('UserService', () => {
     it('should return password updated', async () => {
       const user = await service.updatePassword(userEntityMock.id, updatePasswordMock);
   
-      expect(user).toEqual(undefined);
+      expect(user).toEqual(userEntityMock);
     });
 
     it('should return error in invalid password', async () => {

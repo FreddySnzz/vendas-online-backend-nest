@@ -23,7 +23,7 @@ export class UserController {
   };
 
   @Get('/:userId')
-  async getUserById(@Param('userId') userId: number): Promise<ReturnUserDto> {
+  async findUserById(@Param('userId') userId: number): Promise<ReturnUserDto> {
     return new ReturnUserDto(await this.userService.findUserById(userId));
   };
 
@@ -38,7 +38,7 @@ export class UserController {
   async updatePassword(
     @UserId() userId: number,
     @Body() updatePasswordDto: UpdatePasswordDto
-  ): Promise<UserEntity> {
-    return this.userService.updatePassword(userId, updatePasswordDto)
+  ): Promise<ReturnUserDto> {
+    return new ReturnUserDto(await this.userService.updatePassword(userId, updatePasswordDto));
   };
 }

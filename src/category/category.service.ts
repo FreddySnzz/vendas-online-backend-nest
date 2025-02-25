@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 import { CategoryEntity } from './entities/category.entity';
 import { CreateCategoryDto } from './dtos/create-category.dto';
+import { toCapitalized } from '../utils/capitalize-words';
 
 @Injectable()
 export class CategoryService {
@@ -36,7 +37,7 @@ export class CategoryService {
   async findCategoryByName(name: string): Promise<CategoryEntity[]> {
     const category = await this.categoryRepository.find({
       where: {
-        name
+        name: Like(`%${toCapitalized(name)}%`)
       }
     });
 

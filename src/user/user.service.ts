@@ -100,6 +100,6 @@ export class UserService {
       password: passwordHashed
     });
 
-    return undefined;
+    return user;
   };
 }

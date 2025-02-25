@@ -4,8 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { typeOrmService } from './config/typeorm.config';
 import { StateModule } from './state/state.module';
@@ -37,12 +35,10 @@ import { CartProductModule } from './cart-product/cart-product.module';
     CartModule,
     CartProductModule,
   ],
-  controllers: [AppController],
   providers: [{
     provide: APP_GUARD,
     useClass: RolesGuard,
-  },
-  AppService],
+  }],
 })
 
 export class AppModule {}
