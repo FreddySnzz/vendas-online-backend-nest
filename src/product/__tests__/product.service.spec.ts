@@ -58,6 +58,12 @@ describe('ProductService', () => {
   
       expect(products).toEqual([productMock]);
     });
+
+    it('should return all products searching by id', async () => {
+      const products = await service.findAll([productMock.id]);
+      
+      expect(products).toEqual([productMock]);
+    });
   
     it('should return error if product list is empty', async () => {
       jest.spyOn(productRepository, "find").mockResolvedValue([]);

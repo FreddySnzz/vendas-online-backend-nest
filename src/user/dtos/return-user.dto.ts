@@ -15,6 +15,8 @@ export class ReturnUserDto {
     this.email = userEntity.email;
     this.cpf = userEntity.cpf;
     this.phone = userEntity.phone;
-    this.addresses = userEntity.addresses ? userEntity.addresses.map((address) => new ReturnAddressDto(address)) : [];
+    this.addresses = userEntity.addresses 
+    ? userEntity.addresses.map((address) => new ReturnAddressDto(address)) 
+    : [];
   };
 }
