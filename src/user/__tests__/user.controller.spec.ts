@@ -61,6 +61,19 @@ describe('UserController', () => {
     });
   });
 
+  it('Get User By AuthToken (userId)', async () => {
+    const user = await controller.findUserByToken(userEntityMock.id);
+
+    expect(user).toEqual({
+      id: userEntityMock.id,
+      name: userEntityMock.name,
+      email: userEntityMock.email,
+      phone: userEntityMock.phone,
+      cpf: userEntityMock.cpf,
+      addresses: [],
+    });
+  });
+
   it('Create User', async () => {
     const user = await controller.createUser(createUserMock);
 

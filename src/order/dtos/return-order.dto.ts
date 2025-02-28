@@ -15,11 +15,15 @@ export class ReturnOrderDto {
     this.id = orderEntity.id;
     this.date = orderEntity.date;
     this.createdAt = orderEntity.createdAt;
-    this.address = new ReturnAddressDto(orderEntity.address);
+    this.address = orderEntity.address
+      ? new ReturnAddressDto(orderEntity.address)
+      : undefined;
     this.ordersProduct = orderEntity.ordersProduct
-    ? orderEntity.ordersProduct.map(
-      (orderProducts) => new ReturnOrderProductDto(orderProducts)
-    ) : [];
-    this.payment = new ReturnPaymentDto(orderEntity.payment);
+      ? orderEntity.ordersProduct.map(
+        (orderProducts) => new ReturnOrderProductDto(orderProducts)
+      ) : [];
+    this.payment = orderEntity.payment
+    ? new ReturnPaymentDto(orderEntity.payment)
+    : undefined;
   };
 }

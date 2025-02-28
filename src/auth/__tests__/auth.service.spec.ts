@@ -6,6 +6,7 @@ import { UserService } from "../../user/user.service";
 import { userEntityMock } from "../../user/__mocks__/user.mock";
 import { jwtMock } from "../__mocks__/jwt.mock";
 import { loginUserMock } from "../__mocks__/login-user.mock";
+import { NotFoundException } from "@nestjs/common";
 
 describe('AuthService', () => {
   let service: AuthService;
