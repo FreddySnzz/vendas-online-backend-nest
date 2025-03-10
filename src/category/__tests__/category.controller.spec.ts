@@ -37,10 +37,7 @@ describe('CategoryController', () => {
   it('Get All Categories', async () => {
     const categories = await controller.getAllCategories();
 
-    expect(categories).toEqual([{
-      id: categoryMock.id,
-      name: categoryMock.name
-    }]);
+    expect(categories).toEqual([categoryMock]);
   });
 
   it('Create Category', async () => {

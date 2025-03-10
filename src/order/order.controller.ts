@@ -2,6 +2,7 @@ import {
   Body, 
   Controller, 
   Get, 
+  Param, 
   Post, 
   UsePipes, 
   ValidationPipe 
@@ -36,6 +37,24 @@ export class OrderController {
     @UserId() userId: number
   ): Promise<ReturnOrderDto[]> {
     return (await this.orderService.findOrdersByUserId(userId)).map(
+      orderEntity => new ReturnOrderDto(orderEntity),
+    );
+  };
+
+  @Roles(UserType.Admin)
+  @Get('/all')
+  async findAllOrders(): Promise<ReturnOrderDto[]> {
+    return (await this.orderService.findAllOrders()).map(
+      (order) => new ReturnOrderDto(order),
+    );
+  };
+
+  @Roles(UserType.Admin)
+  @Get('/:orderId')
+  async findOrderById(
+    @Param('orderId') orderId: number
+  ): Promise<ReturnOrderDto[]> {
+    return (await this.orderService.findOrdersByUserId(undefined, orderId)).map(
       orderEntity => new ReturnOrderDto(orderEntity),
     );
   };

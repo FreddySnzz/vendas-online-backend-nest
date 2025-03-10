@@ -17,6 +17,6 @@ export class ReturnUserDto {
     this.phone = userEntity.phone;
     this.addresses = userEntity.addresses 
     ? userEntity.addresses.map((address) => new ReturnAddressDto(address)) 
-    : [];
+    : undefined;
   };
 }

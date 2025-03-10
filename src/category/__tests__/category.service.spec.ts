@@ -6,11 +6,15 @@ import { CategoryService } from '../category.service';
 import { CategoryEntity } from '../entities/category.entity';
 import { categoryMock } from '../__mocks__/category.mock';
 import { createCategoryMock } from '../__mocks__/create-category.mock';
+import { ProductService } from '../../product/product.service';
+import { countProductMock } from '../../product/__mocks__/count-product.mock';
+import { ReturnCategoryDto } from '../dtos/return-category.dto';
 
 describe('CategoryService', () => {
   let service: CategoryService;
   let categoryRepository: Repository<CategoryEntity>;
-
+  let productService: ProductService;
+  
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [ 
@@ -22,7 +26,13 @@ describe('CategoryService', () => {
             findOne: jest.fn().mockResolvedValue(categoryMock),
             save: jest.fn().mockResolvedValue(categoryMock)
           }
-        }
+        },
+        {
+          provide: ProductService,
+          useValue: {
+            countProductsByCategoryId: jest.fn().mockResolvedValue([countProductMock])
+          },
+        },
       ],
     }).compile();
 
@@ -30,18 +40,25 @@ describe('CategoryService', () => {
     categoryRepository = module.get<Repository<CategoryEntity>>(
       getRepositoryToken(CategoryEntity)
     );
+    productService = module.get<ProductService>(ProductService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(categoryRepository).toBeDefined();
+    expect(productService).toBeDefined();
   });
 
   describe('Find all categories', () => {
     it('should return all categories', async () => {
       const categories = await service.getAllCategories();
   
-      expect(categories).toEqual([categoryMock]);
+      expect(categories).toEqual([
+        new ReturnCategoryDto(
+          categoryMock,
+          countProductMock.total
+        )
+      ]);
     });
   
     it('should return error in list categories empty', async () => {

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, In, Like, Repository, UpdateResult } from 'typeorm';
 
@@ -6,6 +6,7 @@ import { ProductEntity } from './entities/product.entity';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { CategoryService } from '../category/category.service';
 import { UpdateProductDto } from './dtos/update-product.dto';
+import { CountProductDto } from './dtos/count-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -13,6 +14,8 @@ export class ProductService {
   constructor (
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
+
+    @Inject(forwardRef(() => CategoryService))
     private readonly categoryService: CategoryService
   ) {}
 
@@ -112,5 +115,13 @@ export class ProductService {
     await this.findProductById(productId);
 
     return this.productRepository.update(productId, updateProduct);
+  };
+
+  async countProductsByCategoryId(): Promise<CountProductDto[]> {
+    return this.productRepository
+      .createQueryBuilder('product')
+      .select('product.category_id COUNT(*) as total')
+      .groupBy('product.category_id')
+      .getRawMany();
   };
 }

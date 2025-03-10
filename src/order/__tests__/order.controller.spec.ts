@@ -21,6 +21,7 @@ describe('OrderController', () => {
           useValue: {
             createOrder: jest.fn().mockResolvedValue(orderMock),
             findOrdersByUserId: jest.fn().mockResolvedValue([orderMock]),
+            findAllOrders: jest.fn().mockResolvedValue([orderMock]),
           },
         },
       ],
@@ -53,8 +54,38 @@ describe('OrderController', () => {
       date: orderMock.date,
       createdAt: orderMock.createdAt,
       address: orders[0].address ? addressMock : undefined,
-      ordersProduct: orders[0].ordersProduct.length > 0 ? orderProductMock : [],
+      ordersProduct: orders[0].ordersProduct ? orderProductMock : undefined,
       payment: orders[0].payment ? paymentMock : undefined,
     }]);
+  });
+
+  it('should return order in findOrderById', async () => {
+    const spy = jest.spyOn(orderService, 'findOrdersByUserId');
+    const orders = await controller.findOrderById(orderMock.id);
+
+    expect(orders).toEqual([{
+      id: orderMock.id,
+      date: orderMock.date,
+      createdAt: orderMock.createdAt,
+      address: orders[0].address ? addressMock : undefined,
+      ordersProduct: orders[0].ordersProduct ? orderProductMock : undefined,
+      payment: orders[0].payment ? paymentMock : undefined,
+    }]);
+    expect(spy.mock.calls.length).toEqual(1);
+  });
+
+  it('should return all orders', async () => {
+    const spy = jest.spyOn(orderService, 'findAllOrders');
+    const orders = await controller.findAllOrders();
+
+    expect(orders).toEqual([{
+      id: orderMock.id,
+      date: orderMock.date,
+      createdAt: orderMock.createdAt,
+      address: orders[0].address ? addressMock : undefined,
+      ordersProduct: orders[0].ordersProduct ? orderProductMock : undefined,
+      payment: orders[0].payment ? paymentMock : undefined,
+    }]);
+    expect(spy.mock.calls.length).toEqual(1);
   });
 });
