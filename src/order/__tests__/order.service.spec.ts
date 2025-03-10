@@ -17,6 +17,7 @@ import { cartProductMock } from '../../cart-product/__mocks__/cart-product.mock'
 import { orderProductMock } from '../../order-product/__mocks__/order-product.mock';
 import { productMock } from '../../product/__mocks__/product.mock';
 import { createOrderPixMock } from '../__mocks__/create-order.mock';
+import { amountOrderProductMock } from '../../order-product/__mocks__/amount-order-product.mock';
 
 jest.useFakeTimers().setSystemTime(new Date('2025-03-01'));
 
@@ -52,6 +53,7 @@ describe('OrderService', () => {
           provide: OrderProductService,
           useValue: {
             createOrderProduct: jest.fn().mockResolvedValue(orderProductMock),
+            findAmountProductsByOrderId: jest.fn().mockResolvedValue([amountOrderProductMock]),
           },
         },
         {
@@ -109,6 +111,7 @@ describe('OrderService', () => {
           payment: {
             paymentStatus: true
           },
+          user: false
         },
       })
     });

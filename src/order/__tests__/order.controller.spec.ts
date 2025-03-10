@@ -56,6 +56,8 @@ describe('OrderController', () => {
       address: orders[0].address ? addressMock : undefined,
       ordersProduct: orders[0].ordersProduct ? orderProductMock : undefined,
       payment: orders[0].payment ? paymentMock : undefined,
+      user: orders[0].user ? userEntityMock : undefined,
+      amountProducts: orders[0].amountProducts,
     }]);
   });
 
@@ -70,6 +72,8 @@ describe('OrderController', () => {
       address: orders[0].address ? addressMock : undefined,
       ordersProduct: orders[0].ordersProduct ? orderProductMock : undefined,
       payment: orders[0].payment ? paymentMock : undefined,
+      user: orders[0].user ? userEntityMock : undefined,
+      amountProducts: orders[0].amountProducts,
     }]);
     expect(spy.mock.calls.length).toEqual(1);
   });
@@ -85,6 +89,8 @@ describe('OrderController', () => {
       address: orders[0].address ? addressMock : undefined,
       ordersProduct: orders[0].ordersProduct ? orderProductMock : undefined,
       payment: orders[0].payment ? paymentMock : undefined,
+      user: orders[0].user ? userEntityMock : undefined,
+      amountProducts: orders[0].amountProducts,
     }]);
     expect(spy.mock.calls.length).toEqual(1);
   });
