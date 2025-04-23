@@ -3,5 +3,5 @@ import { CountProductDto } from '../dtos/count-product.dto';
 
 export const countProductMock: CountProductDto = {
   category_id: categoryMock.id,
-  total: 4,
+  total: 4
 };

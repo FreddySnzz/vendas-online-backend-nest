@@ -33,6 +33,10 @@ describe('StateController', () => {
   it('Get All States', async () => {
     const states = await controller.getAllState();
 
-    expect(states).toEqual([stateMock]);
+    expect(states).toEqual([{
+      id: stateMock.id,
+      name: stateMock.name,
+      uf: stateMock.uf,
+    }]);
   });
 });

@@ -34,6 +34,14 @@ describe('CityController', () => {
   it('Get All Cities By State ID', async () => {
     const cities = await controller.getAllCitiesByStateId(stateMock.id);
 
-    expect(cities).toEqual([cityMock]);
+    expect(cities).toEqual([{
+      id: cityMock.id,
+      name: cityMock.name,
+      state: {
+        id: stateMock.id,
+        name: stateMock.name,
+        uf: stateMock.uf
+      }
+    }]);
   });
 });

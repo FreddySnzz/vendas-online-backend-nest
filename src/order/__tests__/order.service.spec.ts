@@ -104,7 +104,11 @@ describe('OrderService', () => {
           userId: userEntityMock.id,
         },
         relations: {
-          address: true,
+          address: {
+            city: {
+              state: true,
+            }
+          },
           ordersProduct: {
             product: true
           },

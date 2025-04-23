@@ -42,7 +42,9 @@ export class CartService {
     return cart;
   };
 
-  async createCart(userId: number): Promise<CartEntity> {
+  async createCart(
+    userId: number
+  ): Promise<CartEntity> {
     return await this.cartRepository.save({
       active: true,
       userId: userId
@@ -64,7 +66,9 @@ export class CartService {
     return cart;
   };
 
-  async clearCart(userId: number): Promise<UpdateResult> {
+  async clearCart(
+    userId: number
+  ): Promise<UpdateResult> {
     const cart = await this.findActiveCartByUserId(userId);
 
     return await this.cartRepository.update(cart.id, {

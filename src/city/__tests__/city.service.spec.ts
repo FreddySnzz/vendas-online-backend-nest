@@ -6,7 +6,6 @@ import { CityService } from "../city.service";
 import { CityEntity } from "../entities/city.entity";
 import { cityMock } from "../__mocks__/city.mock";
 import { CacheService } from "../../cache/cache.service";
-import e from "express";
 
 describe('CityService', () => {
   let service: CityService;

@@ -45,9 +45,11 @@ describe('ProductController', () => {
 
     expect(products).toEqual([{
       id: productMock.id,
-      image: productMock.image,
+      imageUrl: productMock.imageUrl,
       name: productMock.name,
-      price: productMock.price
+      description: productMock.description,
+      price: productMock.price,
+      stockAmount: productMock.stockAmount
     }]);
   });
 
@@ -56,9 +58,11 @@ describe('ProductController', () => {
 
     expect(products).toEqual([{
       id: productMock.id,
-      image: productMock.image,
+      imageUrl: productMock.imageUrl,
       name: productMock.name,
-      price: productMock.price
+      description: productMock.description,
+      price: productMock.price,
+      stockAmount: productMock.stockAmount
     }]);
   });
 
@@ -67,9 +71,11 @@ describe('ProductController', () => {
 
     expect(products).toEqual([{
       id: productMock.id,
-      image: productMock.image,
+      imageUrl: productMock.imageUrl,
       name: productMock.name,
-      price: productMock.price
+      description: productMock.description,
+      price: productMock.price,
+      stockAmount: productMock.stockAmount
     }]);
   });
 
@@ -78,9 +84,11 @@ describe('ProductController', () => {
 
     expect(product).toEqual({
       id: productMock.id,
-      image: productMock.image,
+      imageUrl: productMock.imageUrl,
       name: productMock.name,
-      price: productMock.price
+      description: productMock.description,
+      price: productMock.price,
+      stockAmount: productMock.stockAmount
     });
   });
 
