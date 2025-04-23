@@ -1,4 +1,4 @@
 export interface CountProductDto {
-  category_id: number;
+  categoryId: number;
   total: number;
 }

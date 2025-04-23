@@ -27,14 +27,8 @@ export class ProductEntity {
   @Column({ name: 'price', type: 'decimal', nullable: false })
   price: number;
 
-  @Column({ name: 'description'})
-  description: string;
-
-  @Column({ name: 'image_url' })
-  imageUrl: string;
-
-  @Column({ name: 'stock_amount', nullable: false })
-  stockAmount: number;
+  @Column({ name: 'image' })
+  image: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

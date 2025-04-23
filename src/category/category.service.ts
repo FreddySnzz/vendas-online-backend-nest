@@ -1,6 +1,6 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { DeleteResult, Like, Repository } from 'typeorm';
 
 import { CategoryEntity } from './entities/category.entity';
 import { CreateCategoryDto } from './dtos/create-category.dto';
@@ -25,7 +25,7 @@ export class CategoryService {
     countList: CountProductDto[],
   ): number {
     const count = countList.find(
-      (itemCount) => itemCount.category_id === category.id,
+      (itemCount) => itemCount.categoryId === category.id,
     );
 
     if (count) {
@@ -52,7 +52,9 @@ export class CategoryService {
     );
   };
 
-  async createCategory(createCategoryDto: CreateCategoryDto): Promise<CategoryEntity> {
+  async createCategory(
+    createCategoryDto: CreateCategoryDto
+  ): Promise<CategoryEntity> {
     const category = await this.findCategoryByName(createCategoryDto.name).catch(() => undefined);
 
     if (category) {
@@ -62,7 +64,9 @@ export class CategoryService {
     return await this.categoryRepository.save(createCategoryDto);
   };
 
-  async findCategoryByName(name: string): Promise<CategoryEntity[]> {
+  async findCategoryByName(
+    name: string
+  ): Promise<CategoryEntity[]> {
     const category = await this.categoryRepository.find({
       where: {
         name: Like(`%${toCapitalized(name)}%`)
@@ -76,11 +80,21 @@ export class CategoryService {
     return category;
   };
 
-  async findCategoryById(id: number): Promise<CategoryEntity> {
+  async findCategoryById(
+    id: number, 
+    isRelations?: boolean
+  ): Promise<CategoryEntity> {
+    const relations = isRelations 
+    ? {
+        products: true
+      }
+    : undefined;
+
     const category = await this.categoryRepository.findOne({
       where: {
         id
-      }
+      },
+      relations
     });
 
     if (!category) {
@@ -88,5 +102,17 @@ export class CategoryService {
     };
 
     return category;
+  };
+
+  async deleteCategoryById(
+    id: number
+  ): Promise<DeleteResult> {
+    const category = await this.findCategoryById(id, true);
+
+    if (category.products?.length > 0) {
+      throw new BadRequestException(`Category ID: ${id} has products`);
+    };
+
+    return this.categoryRepository.delete({ id: id });
   };
 }

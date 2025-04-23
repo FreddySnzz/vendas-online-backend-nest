@@ -25,8 +25,14 @@ export class RolesGuard implements CanActivate {
 
     const { authorization } = context.switchToHttp().getRequest().headers;
 
+    const token = authorization?.startsWith("Bearer ")
+      ? authorization.split(" ")[1]
+      : undefined;
+
+    if (!token) return false;
+
     const loginPayload: LoginPayloadDto | undefined = await this.jwtService.verifyAsync(
-      authorization, { secret: process.env.JWT_SECRET }
+      token, { secret: process.env.JWT_SECRET }
     ).catch(() => undefined);
 
     if (!loginPayload) {

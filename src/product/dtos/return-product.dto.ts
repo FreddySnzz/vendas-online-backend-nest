@@ -3,20 +3,16 @@ import { ProductEntity } from "../entities/product.entity";
 
 export class ReturnProductDto {
   id: number;
-  imageUrl: string;
+  image: string;
   name: string;
-  description?: string;
   price: number;
-  stockAmount: number;
   category?: ReturnCategoryDto;
 
   constructor(productEntity: ProductEntity) {
     this.id = productEntity.id;
-    this.imageUrl = productEntity.imageUrl;
+    this.image = productEntity.image;
     this.name = productEntity.name;
-    this.description = productEntity.description;
     this.price = productEntity.price;
-    this.stockAmount = productEntity.stockAmount;
     this.category = productEntity.category 
     ? new ReturnCategoryDto(productEntity.category) 
     : undefined;

@@ -8,15 +8,8 @@ export class CreateProductDto {
   name: string;
 
   @IsString()
-  @IsOptional()
-  description: string;
-
-  @IsString()
-  imageUrl: string;
+  image: string;
 
   @IsNumber()
   price: number;
-
-  @IsNumber()
-  stockAmount: number;
 }

@@ -4,11 +4,9 @@ import { ProductEntity } from "../entities/product.entity";
 export const productMock: ProductEntity = {
   categoryId: categoryMock.id,
   id: 1,
-  imageUrl: "http://image.com",
-  description: "Um livro muito legal",
+  image: "http://image.com",
   name: "Alice no país das maravilhas",
   price: 34.99,
-  stockAmount: 10,
   createdAt: new Date(),
   updatedAt: new Date()
 }

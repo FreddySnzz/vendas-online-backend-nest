@@ -1,16 +1,32 @@
-import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, In, Like, Repository, UpdateResult } from 'typeorm';
+import { 
+  BadRequestException, 
+  forwardRef, 
+  Inject, 
+  Injectable, 
+  NotFoundException 
+} from '@nestjs/common';
+import { 
+  DeleteResult, 
+  In, 
+  Like, 
+  Repository, 
+  UpdateResult 
+} from 'typeorm';
 
 import { ProductEntity } from './entities/product.entity';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { CategoryService } from '../category/category.service';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { CountProductDto } from './dtos/count-product.dto';
+import { Pagination, PaginationMeta } from '../dtos/pagination.dto';
+import { ReturnProductDto } from './dtos/return-product.dto';
+
+const DEFAULT_SIZE = 10;
+const DEFAULT_PAGE = 1;
 
 @Injectable()
 export class ProductService {
-
   constructor (
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
@@ -21,7 +37,7 @@ export class ProductService {
 
   async findAll(
     productId?: number[],
-    isFindRelations?: boolean
+    isFindRelations?: boolean,
   ): Promise<ProductEntity[]> {
     let findOptions = {};
 
@@ -29,7 +45,7 @@ export class ProductService {
       findOptions = {
         where: {
           id: In(productId),
-        },
+        }
       };
     };
 
@@ -40,7 +56,7 @@ export class ProductService {
           category: true
         }
       };
-    }
+    };
 
     const products = await this.productRepository.find(findOptions);
 
@@ -49,6 +65,57 @@ export class ProductService {
     };
 
     return products;
+  };
+
+  async findAllPaginated(
+    productId?: number[],
+    isFindRelations?: boolean,
+    size = DEFAULT_SIZE,
+    page = DEFAULT_PAGE,
+  ): Promise<Pagination<ReturnProductDto[]>> {
+    let findOptions = {};
+    page = isNaN(Number(page)) ? DEFAULT_PAGE : Number(page);
+    size = isNaN(Number(size)) ? DEFAULT_SIZE : Number(size);
+
+    const skip = Number(page - 1) * Number(size);
+
+    if (productId && productId.length > 0) {
+      findOptions = {
+        where: {
+          id: In(productId),
+        }
+      };
+    };
+
+    if (isFindRelations) {
+      findOptions = {
+        ...findOptions,
+        relations: {
+          category: true
+        }
+      };
+    };
+
+    const [products, total] = await this.productRepository.findAndCount({
+      ...findOptions,
+      take: size,
+      skip,
+    });
+
+    if (!products || total < 1) {
+      throw new NotFoundException(`Products not found`);
+    };
+
+    const productsDto = products.map(product => new ReturnProductDto(product));
+
+    return new Pagination(
+      new PaginationMeta(
+        size,
+        total,
+        page,
+        Math.ceil(total / size)
+      ), productsDto
+    );
   };
 
   async findAllByCategoryId(categoryId: number): Promise<ProductEntity[]> {
@@ -65,11 +132,18 @@ export class ProductService {
     return products;
   };
 
-  async findProductById(id: number): Promise<ProductEntity> {
+  async findProductById(id: number, isRelations?: boolean): Promise<ProductEntity> {
+    let relations = isRelations 
+    ? {
+        category: true
+      } 
+    : undefined;
+
     const product = await this.productRepository.findOne({
       where: {
         id
-      }
+      },
+      relations
     });
 
     if (!product) {
@@ -79,11 +153,13 @@ export class ProductService {
     return product;
   };
 
-  async findProductByName(name: string): Promise<ProductEntity[]> {
+  async findProductByName(
+    name: string,
+  ): Promise<ProductEntity[]> {
     const product = await this.productRepository.find({
       where: {
         name: Like(`%${name}%`)
-      }
+      },
     });
 
     if (!product || product.length === 0) {
@@ -118,9 +194,10 @@ export class ProductService {
   };
 
   async countProductsByCategoryId(): Promise<CountProductDto[]> {
-    return this.productRepository
+    return await this.productRepository
       .createQueryBuilder('product')
-      .select('product.category_id COUNT(*) as total')
+      .select('product.category_id', 'categoryId')
+      .addSelect('COUNT(*)', 'total')
       .groupBy('product.category_id')
       .getRawMany();
   };

@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Param, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Delete, 
+  Get, 
+  Param, 
+  Post, 
+  Query, 
+  UsePipes, 
+  ValidationPipe 
+} from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 
 import { CategoryService } from './category.service';
 import { ReturnCategoryDto } from './dtos/return-category.dto';
@@ -40,5 +51,13 @@ export class CategoryController {
     @Param('id') id: number
   ): Promise<ReturnCategoryDto> {
     return await this.categoryService.findCategoryById(id);
+  };
+
+  @Roles(UserType.Admin)
+  @Delete('/:categoryId')
+  async deleteCategoryById(
+    @Param('categoryId') categoryId: number
+  ): Promise<DeleteResult> {
+    return await this.categoryService.deleteCategoryById(categoryId);
   };
 }

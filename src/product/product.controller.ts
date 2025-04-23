@@ -8,6 +8,7 @@ import { CreateProductDto } from './dtos/create-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { UpdateProductDto } from './dtos/update-product.dto';
+import { Pagination } from 'src/dtos/pagination.dto';
 
 @Roles(UserType.User, UserType.Admin)
 @Controller('product')
@@ -15,10 +16,11 @@ export class ProductController {
   constructor (private readonly productService: ProductService) {}
 
   @Get()
-  async findAll(): Promise<ReturnProductDto[]> {
-    return (await this.productService.findAll([], true)).map(
-      product => new ReturnProductDto(product)
-    );
+  async findAll(
+    @Query('size') size?: number,
+    @Query('page') page?: number,
+  ): Promise<Pagination<ReturnProductDto[]>> {
+    return (await this.productService.findAllPaginated([], true, size, page));
   };
   
   @Get('search-by-category')
@@ -32,7 +34,7 @@ export class ProductController {
 
   @Get('search-by-name')
   async findProductByName(
-    @Query('product_name') productName: string
+    @Query('product_name') productName: string,
   ): Promise<ReturnProductDto[]> {
     return (await this.productService.findProductByName(productName)).map(
       product => new ReturnProductDto(product)
@@ -43,7 +45,7 @@ export class ProductController {
   async findProductById(
     @Param('id') id: number
   ): Promise<ReturnProductDto> {
-    return new ReturnProductDto(await this.productService.findProductById(id));
+    return new ReturnProductDto(await this.productService.findProductById(id, true));
   };
 
   @Roles(UserType.Admin)

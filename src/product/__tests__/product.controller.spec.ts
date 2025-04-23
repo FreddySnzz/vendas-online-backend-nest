@@ -45,11 +45,9 @@ describe('ProductController', () => {
 
     expect(products).toEqual([{
       id: productMock.id,
-      imageUrl: productMock.imageUrl,
+      image: productMock.image,
       name: productMock.name,
-      description: productMock.description,
       price: productMock.price,
-      stockAmount: productMock.stockAmount
     }]);
   });
 
@@ -58,11 +56,9 @@ describe('ProductController', () => {
 
     expect(products).toEqual([{
       id: productMock.id,
-      imageUrl: productMock.imageUrl,
+      image: productMock.image,
       name: productMock.name,
-      description: productMock.description,
       price: productMock.price,
-      stockAmount: productMock.stockAmount
     }]);
   });
 
@@ -71,11 +67,9 @@ describe('ProductController', () => {
 
     expect(products).toEqual([{
       id: productMock.id,
-      imageUrl: productMock.imageUrl,
+      image: productMock.image,
       name: productMock.name,
-      description: productMock.description,
       price: productMock.price,
-      stockAmount: productMock.stockAmount
     }]);
   });
 
@@ -84,11 +78,9 @@ describe('ProductController', () => {
 
     expect(product).toEqual({
       id: productMock.id,
-      imageUrl: productMock.imageUrl,
+      image: productMock.image,
       name: productMock.name,
-      description: productMock.description,
       price: productMock.price,
-      stockAmount: productMock.stockAmount
     });
   });
 

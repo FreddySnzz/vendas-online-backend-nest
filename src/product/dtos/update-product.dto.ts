@@ -8,14 +8,7 @@ export class UpdateProductDto {
   name: string;
 
   @IsString()
-  @IsOptional()
-  description: string;
-
-  @IsNumber()
-  stockAmount: number;
-
-  @IsString()
-  imageUrl: string;
+  image: string;
 
   @IsNumber()
   price: number;
